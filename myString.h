@@ -21,5 +21,6 @@ void printCellRecursively(Cell* cell);
 void printReverseCell(Cell* cell);
 void concatenateCells(Cell*, Cell*);
 void llcRemoveChar(Cell* cell, char characterToRemove);
+Cell* reverseLLC(Cell* cell);
 
 #endif //MYSTRING_MYSTRING_H

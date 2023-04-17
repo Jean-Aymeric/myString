@@ -3,26 +3,29 @@
 //
 
 #include "myString.h"
-Cell* createCell(char value) {
-    Cell* cell = (Cell*) malloc(sizeof (Cell));
+
+void clearCell(Cell *cell);
+
+Cell *createCell(char value) {
+    Cell *cell = (Cell *) malloc(sizeof(Cell));
     cell->value = value;
     cell->next = NULL;
 }
 
-void printCell(Cell* cell) {
-    Cell* temporaryCell = cell;
+void printCell(Cell *cell) {
+    Cell *temporaryCell = cell;
     while (temporaryCell != NULL) {
         printf("%c", temporaryCell->value);
         temporaryCell = temporaryCell->next;
     }
 }
 
-Cell* stringToLlc(char* string) {
+Cell *stringToLlc(char *string) {
     if (string == NULL) {
         return NULL;
     }
-    Cell* llc = createCell(string[0]);
-    Cell* temporaryCell = llc;
+    Cell *llc = createCell(string[0]);
+    Cell *temporaryCell = llc;
     for (int i = 1; i < strlen(string); i++) {
         temporaryCell->next = createCell(string[i]);
         temporaryCell = temporaryCell->next;
@@ -30,13 +33,13 @@ Cell* stringToLlc(char* string) {
     return llc;
 }
 
-char* llcToString(Cell* cell) {
+char *llcToString(Cell *cell) {
     if (cell == NULL) {
         return NULL;
     }
     int length = llcLength(cell);
-    char* string = (char*) malloc(sizeof (char) * (length+1));
-    Cell* temporaryCell = cell;
+    char *string = (char *) malloc(sizeof(char) * (length + 1));
+    Cell *temporaryCell = cell;
     for (int i = 0; i < length; i++) {
         string[i] = temporaryCell->value;
         temporaryCell = temporaryCell->next;
@@ -45,12 +48,12 @@ char* llcToString(Cell* cell) {
     return string;
 }
 
-int llcLength(Cell* cell) {
+int llcLength(Cell *cell) {
     if (cell == NULL) {
         return 0;
     }
     int length = 0;
-    Cell* temporaryCell = cell;
+    Cell *temporaryCell = cell;
     while (temporaryCell != NULL) {
         length++;
         temporaryCell = temporaryCell->next;
@@ -58,7 +61,7 @@ int llcLength(Cell* cell) {
     return length;
 }
 
-void printCellRecursively(Cell* cell) {
+void printCellRecursively(Cell *cell) {
     if (cell == NULL) {
         return;
     }
@@ -66,7 +69,7 @@ void printCellRecursively(Cell* cell) {
     printCellRecursively(cell->next);
 }
 
-void printReverseCell(Cell* cell) {
+void printReverseCell(Cell *cell) {
     if (cell == NULL) {
         return;
     }
@@ -74,10 +77,29 @@ void printReverseCell(Cell* cell) {
     printf("%c", cell->value);
 }
 
-void concatenateCells(Cell* cell1, Cell* cell2) {
-    Cell* temporaryCell = cell1;
+void concatenateCells(Cell *cell1, Cell *cell2) {
+    Cell *temporaryCell = cell1;
     while (temporaryCell->next != NULL) {
         temporaryCell = temporaryCell->next;
     }
     temporaryCell->next = cell2;
+}
+
+void llcRemoveChar(Cell *cell, char characterToRemove) {
+    Cell *temporaryCell = cell;
+    Cell *predecessor = NULL;
+    while (temporaryCell->next != NULL) {
+        if (temporaryCell->value == characterToRemove) {
+            predecessor->next = temporaryCell->next;
+            clearCell(temporaryCell);
+            temporaryCell = predecessor->next;
+        } else {
+            predecessor = temporaryCell;
+            temporaryCell = temporaryCell->next;
+        }
+    }
+}
+
+void clearCell(Cell *cell) {
+    free(cell);
 }
